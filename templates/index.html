@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignBridge</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav>
+    <h2 class="logo">
+    🤟 <span>SignBridge</span>
+</h2>
+</nav>
+
+<footer>
+    Made with ❤️ to bridge communication for everyone.
+</footer>
+<section class="hero">
+
+    <div class="card">
+
+         <p class="welcome">
+            Welcome to SignBridge 👋
+        </p>
+
+        <h1>Breaking Communication Barriers</h1>
+
+        <p>
+            Helping Deaf and Hearing people communicate
+            effortlessly using Artificial Intelligence.
+        </p>
+
+        <a href="/sign">
+           <button class="btn">
+               📷 I Use Sign Language
+           </button>
+        </a>
+
+        <a href="/speech">
+            <button class="btn">
+                 🎤 I Use Speech
+            </button>
+        </a>
+
+        <div id="camera-section" style="display:none; margin-top:30px;">
+
+    <video id="video" width="500" autoplay></video>
+
+</div>
+    </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
