@@ -1,25 +1,22 @@
-async function openCamera() {
+function updateGesture() {
 
-    const video = document.getElementById("video");
+    fetch("/gesture")
+        .then(response => response.text())
+        .then(data => {
 
-    const section = document.getElementById("camera-section");
+            document.getElementById("gestureText").innerHTML = data;
 
-    section.style.display = "block";
+        })
+        .catch(error => {
 
-    try {
+            console.log(error);
 
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: true
         });
 
-        video.srcObject = stream;
-
-    }
-
-    catch(err){
-
-        alert("Unable to access camera.");
-
-    }
-
 }
+
+// Update immediately
+updateGesture();
+
+// Update every 300ms
+setInterval(updateGesture, 300);

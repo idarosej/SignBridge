@@ -5,6 +5,9 @@ from utils.gesture_recognition import recognize_gesture
 
 app = Flask(__name__)
 
+# Global gesture text
+gesture = "No Hand Detected"
+
 # Open webcam
 camera = cv2.VideoCapture(0)
 
@@ -19,38 +22,43 @@ mp_draw = mp.solutions.drawing_utils
 
 
 def generate_frames():
+    global gesture
+
     while True:
         success, frame = camera.read()
 
         if not success:
             break
 
-        # Convert to RGB
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # Detect hands
         results = hands.process(rgb)
+
+        # Recognize gesture
         gesture = recognize_gesture(results)
 
-        # Draw landmarks
         if results.multi_hand_landmarks:
+
             for hand_landmarks in results.multi_hand_landmarks:
+
                 mp_draw.draw_landmarks(
                     frame,
                     hand_landmarks,
                     mp_hands.HAND_CONNECTIONS
                 )
+
+        else:
+            gesture = "No Hand Detected"
+
         cv2.putText(
-    frame,
-    gesture,
-    (20,50),
-    cv2.FONT_HERSHEY_SIMPLEX,
-    1,
-    (0,255,0),
-    2
-)
-        
-        # Convert frame to JPEG
+            frame,
+            gesture,
+            (20, 50),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 255, 0),
+            2
+        )
+
         ret, buffer = cv2.imencode(".jpg", frame)
         frame = buffer.tobytes()
 
@@ -83,6 +91,11 @@ def video():
         generate_frames(),
         mimetype="multipart/x-mixed-replace; boundary=frame"
     )
+
+
+@app.route("/gesture")
+def get_gesture():
+    return gesture
 
 
 if __name__ == "__main__":

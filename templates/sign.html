@@ -1,41 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Detection | SignBridge</title>
 
-<title>Sign Detection</title>
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
-<nav>
+    <nav>
+        <h2>🤟 SignBridge</h2>
+    </nav>
 
-🤟 SignBridge
+    <section class="hero">
 
-</nav>
+        <div class="card">
 
-<div class="card">
+            <h1>Live Sign Detection</h1>
 
-<h1>Live Sign Detection</h1>
+            <img src="{{ url_for('video') }}"
+                 width="700"
+                 style="border-radius:15px; border:3px solid #A67B5B;">
 
-<img src="{{ url_for('video') }}" width="700">
+            <br><br>
 
-<br><br>
+            <h2 id="gestureText" style="color:#5C4033;">
+                No Hand Detected
+            </h2>
 
-<a href="/">
+            <br>
 
-<button class="btn">
+            <a href="/">
+                <button class="btn">
+                    ⬅ Back Home
+                </button>
+            </a>
 
-⬅ Back Home
+        </div>
 
-</button>
+    </section>
 
-</a>
-
-</div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
+
 </html>
