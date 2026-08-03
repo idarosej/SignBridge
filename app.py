@@ -87,6 +87,7 @@ def generate_frames():
     global last_prediction
     global prediction_count
 
+    confidence = 0
     while True:
 
         success, frame = camera.read()
@@ -110,7 +111,12 @@ def generate_frames():
 
             prediction = model.predict([landmarks])
 
+            probabilities = model.predict_proba([landmarks])
+
+            confidence = max(probabilities[0]) * 100
+
             current_prediction = encoder.inverse_transform(prediction)[0]
+
 
             if current_prediction == last_prediction:
                 prediction_count += 1
@@ -119,10 +125,14 @@ def generate_frames():
                 prediction_count = 1
 
             if prediction_count >= 5 and gesture != current_prediction:
-
-                gesture = current_prediction
-                speak(gesture)
                 
+                
+                gesture = current_prediction  
+                speak(gesture)      
+                gesture_history.append(gesture)
+
+                if len(gesture_history) > 5:
+                    gesture_history.pop(0)
 
             mp_draw.draw_landmarks(
                 frame,
@@ -135,6 +145,7 @@ def generate_frames():
             gesture = "No Hand Detected"
             last_prediction = ""
             prediction_count = 0
+            gesture_history = []
 
         cv2.putText(
             frame,
@@ -145,7 +156,15 @@ def generate_frames():
             (0, 255, 0),
             2
         )
-
+        cv2.putText(
+                frame,
+                f"Confidence: {confidence:.1f}%",
+                (20, 90),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.8,
+                (255, 255, 0),
+                2
+        )
         ret, buffer = cv2.imencode(".jpg", frame)
 
         if not ret:
@@ -191,6 +210,11 @@ def video():
 def get_gesture():
     return gesture
 
+@app.route("/history")
+def history():
+    return {
+        "history": gesture_history
+    }
 
 # ===========================
 # Run Application

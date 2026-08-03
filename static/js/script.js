@@ -15,6 +15,30 @@ function updateGesture() {
 
 }
 
+async function updateHistory() {
+
+    const response = await fetch("/history");
+
+    const data = await response.json();
+
+    const list = document.getElementById("historyList");
+
+    list.innerHTML = "";
+
+    data.history.forEach(item => {
+
+        const li = document.createElement("li");
+
+        li.textContent = item;
+
+        list.appendChild(li);
+
+    });
+
+}
+
+setInterval(updateHistory, 1000);
+
 // Update immediately
 updateGesture();
 
