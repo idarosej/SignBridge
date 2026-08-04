@@ -17,22 +17,47 @@
 
     <section class="hero">
 
-        <div class="card">
+    <div class="dashboard">
 
-            <h1>Live Sign Detection</h1>
+        <div class="camera-card">
+
+            <h2>📷 Live Camera</h2>
 
             <img src="{{ url_for('video') }}"
                  width="700"
-                 style="border-radius:15px; border:3px solid #A67B5B;">
+                 class="camera">
 
-            <br><br>
+        </div>
 
-            <h2 id="gestureText" style="color:#5C4033;">
+        <div class="info-card">
+
+            <h2>🤟 Current Gesture</h2>
+
+            <h1 id="gestureText">
                 No Hand Detected
-                <h3>Recent Gestures</h3>
+            </h1>
 
-                <ul id="historyList"></ul>
-            </h2>
+            <hr>
+
+            <h3>📊 Confidence</h3>
+
+            <div class="progress">
+
+                <div id="confidenceBar"
+                     class="progress-fill">
+                </div>
+
+            </div>
+
+            <p id="confidenceText">
+                0%
+            </p>
+
+            <hr>
+
+            <h3>📝 Recent Gestures</h3>
+
+            <ul id="historyList"></ul>
 
             <br>
 
@@ -44,7 +69,9 @@
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
