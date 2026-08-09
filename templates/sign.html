@@ -17,15 +17,30 @@
 
 <body>
 
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
     <nav>
+
         <h2>🤟 SignBridge</h2>
+
     </nav>
+
+
+    <!-- =========================
+         MAIN SECTION
+    ========================== -->
 
     <section class="hero">
 
         <div class="dashboard">
 
-            <!-- CAMERA -->
+
+            <!-- =========================
+                 CAMERA CARD
+            ========================== -->
+
             <div class="camera-card">
 
                 <h2>📷 Live Camera</h2>
@@ -41,8 +56,14 @@
             </div>
 
 
-            <!-- INFORMATION -->
+            <!-- =========================
+                 INFORMATION CARD
+            ========================== -->
+
             <div class="info-card">
+
+
+                <!-- CURRENT GESTURE -->
 
                 <h2>🤟 Current Gesture</h2>
 
@@ -66,6 +87,7 @@
 
                     <div id="confidenceBar"
                          class="progress-fill">
+
                     </div>
 
                 </div>
@@ -78,7 +100,7 @@
                 <hr>
 
 
-                <!-- HISTORY -->
+                <!-- RECENT GESTURES -->
 
                 <h3>📝 Recent Gestures</h3>
 
@@ -91,13 +113,74 @@
                 </div>
 
 
+                <hr>
+
+
+                <!-- SESSION STATISTICS -->
+
+                <h3>📈 Session Statistics</h3>
+
+                <div class="stats-grid">
+
+
+                    <!-- TOTAL GESTURES -->
+
+                    <div class="stat-card">
+
+                        <span class="stat-title">
+                            Total Gestures
+                        </span>
+
+                        <strong id="totalGestures">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <!-- MOST DETECTED -->
+
+                    <div class="stat-card">
+
+                        <span class="stat-title">
+                            Most Detected
+                        </span>
+
+                        <strong id="mostDetected">
+                            None
+                        </strong>
+
+                    </div>
+
+
+                    <!-- BEST CONFIDENCE -->
+
+                    <div class="stat-card">
+
+                        <span class="stat-title">
+                            Best Confidence
+                        </span>
+
+                        <strong id="bestConfidence">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
                 <br>
 
 
+                <!-- BACK BUTTON -->
+
                 <a href="/">
+
                     <button class="btn">
                         ⬅ Back Home
                     </button>
+
                 </a>
 
             </div>
@@ -107,7 +190,12 @@
     </section>
 
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}">
+    </script>
 
 </body>
 

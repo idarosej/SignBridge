@@ -143,3 +143,89 @@ setInterval(updateConfidence, 500);
 
 // History
 setInterval(updateHistory, 1000);
+// ===============================
+// UPDATE SESSION STATISTICS
+// ===============================
+
+async function updateStats() {
+
+    try {
+
+        const response = await fetch("/stats");
+
+        if (!response.ok) {
+            throw new Error("Statistics request failed");
+        }
+
+        const data = await response.json();
+
+        const total =
+            document.getElementById("totalGestures");
+
+        const mostDetected =
+            document.getElementById("mostDetected");
+
+        const bestConfidence =
+            document.getElementById("bestConfidence");
+
+        if (total) {
+            total.innerText = data.total;
+        }
+
+        if (mostDetected) {
+            mostDetected.innerText =
+                data.most_detected;
+        }
+
+        if (bestConfidence) {
+            bestConfidence.innerText =
+                data.highest_confidence + "%";
+        }
+
+    } catch (error) {
+
+        console.log("Statistics error:", error);
+
+    }
+}
+updateStats();
+
+setInterval(updateStats, 1000);
+// ===============================
+// SESSION STATISTICS
+// ===============================
+
+async function updateStats() {
+
+    try {
+
+        const response = await fetch("/stats");
+
+        if (!response.ok) {
+            throw new Error("Failed to load statistics");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("totalGestures").innerText =
+            data.total;
+
+        document.getElementById("mostDetected").innerText =
+            data.most_detected;
+
+        document.getElementById("bestConfidence").innerText =
+            data.highest_confidence + "%";
+
+    } catch (error) {
+
+        console.log("Statistics error:", error);
+
+    }
+}
+
+
+// Update statistics immediately
+updateStats();
+
+// Update statistics every second
+setInterval(updateStats, 1000);

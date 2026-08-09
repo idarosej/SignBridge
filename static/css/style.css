@@ -352,5 +352,36 @@ p {
     .gesture-display h1 {
         font-size: 26px;
     }
+/* =========================
+   SESSION STATISTICS
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.stat-card {
+    background: #F7F1E8;
+    border-radius: 12px;
+    padding: 14px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border: 1px solid #E5D8CA;
+}
+
+.stat-title {
+    color: #6F4E37;
+    font-size: 14px;
+}
+
+.stat-card strong {
+    color: #A67B5B;
+    font-size: 18px;
+}
 
 }

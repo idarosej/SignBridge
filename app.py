@@ -79,15 +79,24 @@ hands = mp_hands.Hands(
 mp_draw = mp.solutions.drawing_utils
 
 
+
 # ===========================
 # Camera Stream
 # ===========================
+
 def generate_frames():
+
     global gesture
     global last_prediction
     global prediction_count
+    global confidence
 
-    confidence = 0
+    global gesture_history
+    global gesture_counts
+    global total_gestures
+    global highest_confidence
+    global session_start
+
     while True:
 
         success, frame = camera.read()
@@ -107,33 +116,65 @@ def generate_frames():
             landmarks = []
 
             for lm in hand.landmark:
-                landmarks.extend([lm.x, lm.y, lm.z])
+                landmarks.extend([
+                    lm.x,
+                    lm.y,
+                    lm.z
+                ])
 
+            # AI Prediction
             prediction = model.predict([landmarks])
 
+            # Prediction Confidence
             probabilities = model.predict_proba([landmarks])
 
             confidence = max(probabilities[0]) * 100
 
-            current_prediction = encoder.inverse_transform(prediction)[0]
+            # Track highest confidence
+            if confidence > highest_confidence:
+                highest_confidence = confidence
 
+            current_prediction = encoder.inverse_transform(
+                prediction
+            )[0]
+
+            # ---------------------------
+            # Stable Prediction
+            # ---------------------------
 
             if current_prediction == last_prediction:
+
                 prediction_count += 1
+
             else:
+
                 last_prediction = current_prediction
                 prediction_count = 1
 
+            # ---------------------------
+            # Confirm Gesture
+            # ---------------------------
+
             if prediction_count >= 5 and gesture != current_prediction:
-                
-                
-                gesture = current_prediction  
-                speak(gesture)      
+
+                gesture = current_prediction
+
+                speak(gesture)
+
+                # Add to history
                 gesture_history.append(gesture)
 
                 if len(gesture_history) > 5:
                     gesture_history.pop(0)
 
+                # Update statistics
+                gesture_counts[gesture] = (
+                    gesture_counts.get(gesture, 0) + 1
+                )
+
+                total_gestures += 1
+
+            # Draw hand landmarks
             mp_draw.draw_landmarks(
                 frame,
                 hand,
@@ -142,10 +183,20 @@ def generate_frames():
 
         else:
 
+            # No hand detected
             gesture = "No Hand Detected"
+
             last_prediction = ""
             prediction_count = 0
-            gesture_history = []
+            confidence = 0
+
+            # IMPORTANT:
+            # Do NOT reset statistics here.
+            # Do NOT reset gesture history here.
+
+        # ---------------------------
+        # Display Gesture
+        # ---------------------------
 
         cv2.putText(
             frame,
@@ -156,16 +207,29 @@ def generate_frames():
             (0, 255, 0),
             2
         )
+
+        # ---------------------------
+        # Display Confidence
+        # ---------------------------
+
         cv2.putText(
-                frame,
-                f"Confidence: {confidence:.1f}%",
-                (20, 90),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.8,
-                (255, 255, 0),
-                2
+            frame,
+            f"Confidence: {confidence:.1f}%",
+            (20, 90),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (255, 255, 0),
+            2
         )
-        ret, buffer = cv2.imencode(".jpg", frame)
+
+        # ---------------------------
+        # Encode Frame
+        # ---------------------------
+
+        ret, buffer = cv2.imencode(
+            ".jpg",
+            frame
+        )
 
         if not ret:
             continue
@@ -174,11 +238,28 @@ def generate_frames():
 
         yield (
             b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n' +
-            frame +
+            b'Content-Type: image/jpeg\r\n\r\n'
+            + frame +
             b'\r\n'
         )
 
+gesture = "No Hand Detected"
+
+confidence = 0
+
+gesture_history = []
+
+gesture_counts = {}
+
+total_gestures = 0
+
+highest_confidence = 0
+
+session_start = time.time()
+
+last_prediction = ""
+
+prediction_count = 0
 # ===========================
 # Flask Routes
 # ===========================
@@ -210,12 +291,33 @@ def video():
 def get_gesture():
     return gesture
 
+@app.route("/stats")
+def get_stats():
+
+    most_detected = "None"
+
+    if gesture_counts:
+        most_detected = max(
+            gesture_counts,
+            key=gesture_counts.get
+        )
+
+    return {
+        "total": total_gestures,
+        "most_detected": most_detected,
+        "highest_confidence": round(highest_confidence, 1)
+    }
 @app.route("/history")
 def history():
     return {
         "history": gesture_history
     }
 
+@app.route("/confidence")
+def get_confidence():
+    return {
+        "confidence": round(confidence,1)
+    }
 # ===========================
 # Run Application
 # ===========================
