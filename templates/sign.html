@@ -2,11 +2,17 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Sign Detection | SignBridge</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
@@ -17,61 +23,89 @@
 
     <section class="hero">
 
-    <div class="dashboard">
+        <div class="dashboard">
 
-        <div class="camera-card">
+            <!-- CAMERA -->
+            <div class="camera-card">
 
-            <h2>📷 Live Camera</h2>
+                <h2>📷 Live Camera</h2>
 
-            <img src="{{ url_for('video') }}"
-                 width="700"
-                 class="camera">
+                <img src="{{ url_for('video') }}"
+                     width="700"
+                     class="camera">
 
-        </div>
-
-        <div class="info-card">
-
-            <h2>🤟 Current Gesture</h2>
-
-            <h1 id="gestureText">
-                No Hand Detected
-            </h1>
-
-            <hr>
-
-            <h3>📊 Confidence</h3>
-
-            <div class="progress">
-
-                <div id="confidenceBar"
-                     class="progress-fill">
-                </div>
+                <p class="camera-status">
+                    🟢 Camera Active
+                </p>
 
             </div>
 
-            <p id="confidenceText">
-                0%
-            </p>
 
-            <hr>
+            <!-- INFORMATION -->
+            <div class="info-card">
 
-            <h3>📝 Recent Gestures</h3>
+                <h2>🤟 Current Gesture</h2>
 
-            <ul id="historyList"></ul>
+                <div class="gesture-display">
 
-            <br>
+                    <h1 id="gestureText">
+                        No Hand Detected
+                    </h1>
 
-            <a href="/">
-                <button class="btn">
-                    ⬅ Back Home
-                </button>
-            </a>
+                </div>
+
+
+                <hr>
+
+
+                <!-- CONFIDENCE -->
+
+                <h3>📊 AI Confidence</h3>
+
+                <div class="progress">
+
+                    <div id="confidenceBar"
+                         class="progress-fill">
+                    </div>
+
+                </div>
+
+                <p id="confidenceText">
+                    0%
+                </p>
+
+
+                <hr>
+
+
+                <!-- HISTORY -->
+
+                <h3>📝 Recent Gestures</h3>
+
+                <div class="history-container">
+
+                    <ul id="historyList">
+
+                    </ul>
+
+                </div>
+
+
+                <br>
+
+
+                <a href="/">
+                    <button class="btn">
+                        ⬅ Back Home
+                    </button>
+                </a>
+
+            </div>
 
         </div>
 
-    </div>
+    </section>
 
-</section>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 

@@ -1,157 +1,356 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    background:#F7F1E8;
-    font-family:Arial, Helvetica, sans-serif;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
+/* =========================
+   BODY
+========================= */
+
+body {
+    background: #F7F1E8;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    color: #5B3A29;
 }
 
-.welcome{
-    color:#A67B5B;
-    font-weight:bold;
-    margin-bottom:10px;
+
+/* =========================
+   NAVIGATION
+========================= */
+
+nav {
+    background: #6F4E37;
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.hero{
-    flex:1;
+nav h2 {
+    font-size: 26px;
+    letter-spacing: 0.5px;
 }
 
-nav{
-    display:flex;
-    align-items:center;
-    padding:20px 40px;
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: calc(100vh - 70px);
+    padding: 40px 25px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-nav{
-    background:#6F4E37;
-    color:white;
-    padding:20px 40px;
-    font-size:24px;
-    font-weight:bold;
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    width: 100%;
+    max-width: 1250px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+
+    gap: 30px;
+    align-items: start;
 }
 
-footer{
-    text-align:center;
-    padding:20px;
-    color:#666;
-    font-size:15px;
-}
 
-.btn:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 20px rgba(0,0,0,.2);
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-size:32px;
-}
-
-.hero{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:80vh;
-}
-
-.card{
-    background:white;
-    width:650px;
-    padding:50px;
-    border-radius:25px;
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
-    text-align:center;
-}
-
-h1{
-    color:#5B3A29;
-    margin-bottom:20px;
-    font-size:40px;
-}
-
-p{
-    color:#666;
-    font-size:18px;
-    line-height:1.7;
-    margin-bottom:35px;
-}
-
-.btn{
-    width:100%;
-    padding:18px;
-    margin:15px 0;
-    border:none;
-    border-radius:15px;
-    font-size:18px;
-    cursor:pointer;
-    background:#A67B5B;
-    color:white;
-    transition:0.3s;
-}
-
-.btn:hover{
-    background:#6F4E37;
-    transform:translateY(-2px);
-}
-
-.secondary{
-    background:#8D6E63;
-}
-
-.secondary:hover{
-    background:#5B3A29;
-}
-
-.dashboard{
-    display:flex;
-    gap:30px;
-    justify-content:center;
-    align-items:flex-start;
-    flex-wrap:wrap;
-}
+/* =========================
+   CARDS
+========================= */
 
 .camera-card,
-.info-card{
-    background:white;
-    padding:20px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,.15);
+.info-card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px;
+
+    box-shadow:
+        0 10px 30px rgba(91, 58, 41, 0.12);
+
+    border: 1px solid rgba(166, 123, 91, 0.15);
 }
 
-.camera{
-    border-radius:15px;
-    border:3px solid #A67B5B;
+.camera-card h2,
+.info-card h2 {
+    color: #5B3A29;
+    margin-bottom: 20px;
 }
 
-.progress{
-    width:250px;
-    height:18px;
-    background:#ddd;
-    border-radius:10px;
-    overflow:hidden;
+
+/* =========================
+   CAMERA
+========================= */
+
+.camera {
+    display: block;
+
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+
+    margin: auto;
+
+    border-radius: 16px;
+    border: 3px solid #A67B5B;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.progress-fill{
-    width:0%;
-    height:100%;
-    background:#4CAF50;
-    transition:.3s;
+
+/* CAMERA STATUS */
+
+.camera-status {
+    margin-top: 15px;
+    margin-bottom: 0;
+
+    text-align: center;
+
+    color: #4CAF50;
+    font-size: 15px;
+    font-weight: bold;
 }
 
-#historyList{
-    text-align:left;
-    max-height:180px;
-    overflow-y:auto;
+
+/* =========================
+   GESTURE DISPLAY
+========================= */
+
+.gesture-display {
+    background: #F7F1E8;
+
+    border-radius: 16px;
+
+    padding: 25px 15px;
+
+    text-align: center;
+
+    margin-bottom: 20px;
 }
 
-#historyList li{
-    margin:8px 0;
+.gesture-display h1 {
+    color: #6F4E37;
+    font-size: 32px;
+    margin: 0;
+}
+
+
+/* =========================
+   HEADINGS
+========================= */
+
+h1 {
+    color: #5B3A29;
+}
+
+h3 {
+    color: #6F4E37;
+    margin-bottom: 12px;
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
+
+hr {
+    border: none;
+
+    height: 1px;
+
+    background: #E5D8CA;
+
+    margin: 22px 0;
+}
+
+
+/* =========================
+   CONFIDENCE
+========================= */
+
+.progress {
+    width: 100%;
+    height: 18px;
+
+    background: #E5D8CA;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-top: 10px;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: #A67B5B;
+
+    border-radius: 20px;
+
+    transition: width 0.4s ease;
+}
+
+#confidenceText {
+    text-align: center;
+
+    margin: 10px 0 0;
+
+    color: #6F4E37;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   GESTURE HISTORY
+========================= */
+
+.history-container {
+    background: #FAF7F2;
+
+    border-radius: 14px;
+
+    padding: 12px;
+
+    border: 1px solid #E5D8CA;
+}
+
+#historyList {
+    list-style: none;
+
+    text-align: left;
+
+    max-height: 200px;
+
+    overflow-y: auto;
+
+    padding: 0;
+}
+
+#historyList li {
+    background: white;
+
+    padding: 10px 12px;
+
+    margin-bottom: 8px;
+
+    border-radius: 10px;
+
+    color: #6F4E37;
+
+    font-weight: bold;
+
+    border-left: 4px solid #A67B5B;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+#historyList li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    background: #A67B5B;
+
+    color: white;
+
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    background: #6F4E37;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 18px rgba(91, 58, 41, 0.2);
+}
+
+
+/* =========================
+   GENERAL TEXT
+========================= */
+
+p {
+    color: #666;
+
+    font-size: 16px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 900px) {
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .camera-card,
+    .info-card {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    nav {
+        padding: 15px 20px;
+    }
+
+    nav h2 {
+        font-size: 22px;
+    }
+
+    .hero {
+        padding: 20px 12px;
+    }
+
+    .camera-card,
+    .info-card {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .gesture-display h1 {
+        font-size: 26px;
+    }
+
 }

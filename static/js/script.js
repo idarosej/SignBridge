@@ -1,63 +1,145 @@
-function updateGesture() {
+// ===============================
+// UPDATE CURRENT GESTURE
+// ===============================
 
-    fetch("/gesture")
-        .then(response => response.text())
-        .then(data => {
+async function updateGesture() {
 
-            document.getElementById("gestureText").innerHTML = data;
+    try {
 
-        })
-        .catch(error => {
+        const response = await fetch("/gesture");
 
-            console.log(error);
+        if (!response.ok) {
+            throw new Error("Gesture request failed");
+        }
 
-        });
+        const data = await response.text();
 
+        const gestureText =
+            document.getElementById("gestureText");
+
+        if (gestureText) {
+            gestureText.innerText = data;
+        }
+
+    } catch (error) {
+
+        console.log("Gesture error:", error);
+
+    }
 }
+
+
+// ===============================
+// UPDATE CONFIDENCE
+// ===============================
+
+async function updateConfidence() {
+
+    try {
+
+        const response = await fetch("/confidence");
+
+        if (!response.ok) {
+            throw new Error("Confidence request failed");
+        }
+
+        const data = await response.json();
+
+        const confidence =
+            Number(data.confidence) || 0;
+
+        const confidenceText =
+            document.getElementById("confidenceText");
+
+        const confidenceBar =
+            document.getElementById("confidenceBar");
+
+
+        if (confidenceText) {
+
+            confidenceText.innerText =
+                confidence.toFixed(1) + "%";
+
+        }
+
+
+        if (confidenceBar) {
+
+            confidenceBar.style.width =
+                Math.min(confidence, 100) + "%";
+
+        }
+
+    } catch (error) {
+
+        console.log("Confidence error:", error);
+
+    }
+}
+
+
+// ===============================
+// UPDATE GESTURE HISTORY
+// ===============================
 
 async function updateHistory() {
 
-    const response = await fetch("/history");
+    try {
 
-    const data = await response.json();
+        const response = await fetch("/history");
 
-    const list = document.getElementById("historyList");
+        if (!response.ok) {
+            throw new Error("History request failed");
+        }
 
-    list.innerHTML = "";
+        const data = await response.json();
 
-    data.history.forEach(item => {
+        const list =
+            document.getElementById("historyList");
 
-        const li = document.createElement("li");
+        if (!list) {
+            return;
+        }
 
-        li.textContent = item;
+        list.innerHTML = "";
 
-        list.appendChild(li);
 
-    });
+        data.history.forEach(function(item) {
 
+            const li =
+                document.createElement("li");
+
+            li.textContent = item;
+
+            list.appendChild(li);
+
+        });
+
+    } catch (error) {
+
+        console.log("History error:", error);
+
+    }
 }
 
-async function updateConfidence(){
 
-    const response = await fetch("/confidence");
+// ===============================
+// START UPDATES
+// ===============================
 
-    const data = await response.json();
-
-    document.getElementById("confidenceText").innerText =
-        data.confidence + "%";
-
-    document.getElementById("confidenceBar").style.width =
-        data.confidence + "%";
-
-}
-
-setInterval(updateConfidence,500);
-
-
-setInterval(updateHistory, 1000);
-
-// Update immediately
+// Run immediately
 updateGesture();
+updateConfidence();
+updateHistory();
 
-// Update every 300ms
+
+// Current gesture
 setInterval(updateGesture, 300);
+
+
+// Confidence
+setInterval(updateConfidence, 500);
+
+
+// History
+setInterval(updateHistory, 1000);
