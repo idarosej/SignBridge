@@ -307,6 +307,34 @@ def get_stats():
         "most_detected": most_detected,
         "highest_confidence": round(highest_confidence, 1)
     }
+@app.route("/reset-session", methods=["POST"])
+def reset_session():
+
+    global gesture
+    global confidence
+    global gesture_history
+    global gesture_counts
+    global total_gestures
+    global highest_confidence
+    global last_prediction
+    global prediction_count
+
+    gesture = "No Hand Detected"
+    confidence = 0
+
+    gesture_history.clear()
+    gesture_counts.clear()
+
+    total_gestures = 0
+    highest_confidence = 0
+
+    last_prediction = ""
+    prediction_count = 0
+
+    return {
+        "success": True,
+        "message": "Session reset successfully"
+    }
 @app.route("/history")
 def history():
     return {

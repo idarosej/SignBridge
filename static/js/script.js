@@ -229,3 +229,47 @@ updateStats();
 
 // Update statistics every second
 setInterval(updateStats, 1000);
+
+// ===============================
+// RESET SESSION
+// ===============================
+
+async function resetSession() {
+
+    try {
+
+        const response = await fetch("/reset-session", {
+            method: "POST"
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            document.getElementById("totalGestures").innerText = "0";
+
+            document.getElementById("mostDetected").innerText = "None";
+
+            document.getElementById("bestConfidence").innerText = "0%";
+
+            document.getElementById("historyList").innerHTML = "";
+
+            document.getElementById("gestureText").innerText =
+                "No Hand Detected";
+
+            document.getElementById("confidenceText").innerText =
+                "0%";
+
+            document.getElementById("confidenceBar").style.width =
+                "0%";
+
+            console.log("Session reset successfully");
+
+        }
+
+    } catch (error) {
+
+        console.log("Reset error:", error);
+
+    }
+}
