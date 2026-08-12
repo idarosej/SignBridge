@@ -1,5 +1,5 @@
 // ===============================
-// UPDATE CURRENT GESTURE
+// UPDATE GESTURE
 // ===============================
 
 async function updateGesture() {
@@ -7,18 +7,43 @@ async function updateGesture() {
     try {
 
         const response = await fetch("/gesture");
-
-        if (!response.ok) {
-            throw new Error("Gesture request failed");
-        }
-
         const data = await response.text();
 
         const gestureText =
             document.getElementById("gestureText");
 
+        const sessionStatus =
+            document.getElementById("sessionStatus");
+
+        const statusDot =
+            document.getElementById("statusDot");
+
+
         if (gestureText) {
             gestureText.innerText = data;
+        }
+
+
+        if (data.trim() === "No Hand Detected") {
+
+            if (sessionStatus) {
+                sessionStatus.innerText = "Waiting for Hand";
+            }
+
+            if (statusDot) {
+                statusDot.style.backgroundColor = "#A67B5B";
+            }
+
+        } else {
+
+            if (sessionStatus) {
+                sessionStatus.innerText = "Hand Detected";
+            }
+
+            if (statusDot) {
+                statusDot.style.backgroundColor = "#4CAF50";
+            }
+
         }
 
     } catch (error) {
@@ -29,57 +54,9 @@ async function updateGesture() {
 }
 
 
-// ===============================
-// UPDATE CONFIDENCE
-// ===============================
-
-async function updateConfidence() {
-
-    try {
-
-        const response = await fetch("/confidence");
-
-        if (!response.ok) {
-            throw new Error("Confidence request failed");
-        }
-
-        const data = await response.json();
-
-        const confidence =
-            Number(data.confidence) || 0;
-
-        const confidenceText =
-            document.getElementById("confidenceText");
-
-        const confidenceBar =
-            document.getElementById("confidenceBar");
-
-
-        if (confidenceText) {
-
-            confidenceText.innerText =
-                confidence.toFixed(1) + "%";
-
-        }
-
-
-        if (confidenceBar) {
-
-            confidenceBar.style.width =
-                Math.min(confidence, 100) + "%";
-
-        }
-
-    } catch (error) {
-
-        console.log("Confidence error:", error);
-
-    }
-}
-
 
 // ===============================
-// UPDATE GESTURE HISTORY
+// UPDATE HISTORY
 // ===============================
 
 async function updateHistory() {
@@ -89,7 +66,7 @@ async function updateHistory() {
         const response = await fetch("/history");
 
         if (!response.ok) {
-            throw new Error("History request failed");
+            return;
         }
 
         const data = await response.json();
@@ -103,17 +80,20 @@ async function updateHistory() {
 
         list.innerHTML = "";
 
+        if (data.history) {
 
-        data.history.forEach(function(item) {
+            data.history.forEach(item => {
 
-            const li =
-                document.createElement("li");
+                const li =
+                    document.createElement("li");
 
-            li.textContent = item;
+                li.textContent = item;
 
-            list.appendChild(li);
+                list.appendChild(li);
 
-        });
+            });
+
+        }
 
     } catch (error) {
 
@@ -123,26 +103,54 @@ async function updateHistory() {
 }
 
 
+
 // ===============================
-// START UPDATES
+// UPDATE CONFIDENCE
 // ===============================
 
-// Run immediately
-updateGesture();
-updateConfidence();
-updateHistory();
+async function updateConfidence() {
+
+    try {
+
+        const response = await fetch("/confidence");
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        const confidenceText =
+            document.getElementById("confidenceText");
+
+        const confidenceBar =
+            document.getElementById("confidenceBar");
 
 
-// Current gesture
-setInterval(updateGesture, 300);
+        if (confidenceText) {
+
+            confidenceText.innerText =
+                Number(data.confidence).toFixed(1) + "%";
+
+        }
 
 
-// Confidence
-setInterval(updateConfidence, 500);
+        if (confidenceBar) {
+
+            confidenceBar.style.width =
+                data.confidence + "%";
+
+        }
+
+    } catch (error) {
+
+        console.log("Confidence error:", error);
+
+    }
+}
 
 
-// History
-setInterval(updateHistory, 1000);
+
 // ===============================
 // UPDATE SESSION STATISTICS
 // ===============================
@@ -154,12 +162,15 @@ async function updateStats() {
         const response = await fetch("/stats");
 
         if (!response.ok) {
-            throw new Error("Statistics request failed");
+            return;
         }
 
         const data = await response.json();
 
-        const total =
+        console.log("Session Stats:", data);
+
+
+        const totalGestures =
             document.getElementById("totalGestures");
 
         const mostDetected =
@@ -168,66 +179,59 @@ async function updateStats() {
         const bestConfidence =
             document.getElementById("bestConfidence");
 
-        if (total) {
-            total.innerText = data.total;
+
+        if (totalGestures) {
+
+            totalGestures.innerText =
+                data.total;
+
         }
+
 
         if (mostDetected) {
+
             mostDetected.innerText =
                 data.most_detected;
+
         }
+
 
         if (bestConfidence) {
+
             bestConfidence.innerText =
-                data.highest_confidence + "%";
+                Number(data.highest_confidence).toFixed(1) + "%";
+
         }
 
     } catch (error) {
 
-        console.log("Statistics error:", error);
-
-    }
-}
-updateStats();
-
-setInterval(updateStats, 1000);
-// ===============================
-// SESSION STATISTICS
-// ===============================
-
-async function updateStats() {
-
-    try {
-
-        const response = await fetch("/stats");
-
-        if (!response.ok) {
-            throw new Error("Failed to load statistics");
-        }
-
-        const data = await response.json();
-
-        document.getElementById("totalGestures").innerText =
-            data.total;
-
-        document.getElementById("mostDetected").innerText =
-            data.most_detected;
-
-        document.getElementById("bestConfidence").innerText =
-            data.highest_confidence + "%";
-
-    } catch (error) {
-
-        console.log("Statistics error:", error);
+        console.log("Stats error:", error);
 
     }
 }
 
 
-// Update statistics immediately
+
+// ===============================
+// START DASHBOARD
+// ===============================
+
+updateGesture();
+updateHistory();
+updateConfidence();
 updateStats();
 
-// Update statistics every second
+
+// ===============================
+// AUTO UPDATE
+// ===============================
+
+setInterval(updateGesture, 300);
+
+setInterval(updateHistory, 1000);
+
+setInterval(updateConfidence, 500);
+
 setInterval(updateStats, 1000);
 
 // ===============================
@@ -242,28 +246,21 @@ async function resetSession() {
             method: "POST"
         });
 
+        if (!response.ok) {
+            throw new Error("Reset request failed");
+        }
+
         const data = await response.json();
+
+        console.log(data);
 
         if (data.success) {
 
-            document.getElementById("totalGestures").innerText = "0";
-
-            document.getElementById("mostDetected").innerText = "None";
-
-            document.getElementById("bestConfidence").innerText = "0%";
-
-            document.getElementById("historyList").innerHTML = "";
-
-            document.getElementById("gestureText").innerText =
-                "No Hand Detected";
-
-            document.getElementById("confidenceText").innerText =
-                "0%";
-
-            document.getElementById("confidenceBar").style.width =
-                "0%";
-
-            console.log("Session reset successfully");
+            // Immediately refresh everything
+            await updateGesture();
+            await updateHistory();
+            await updateConfidence();
+            await updateStats();
 
         }
 

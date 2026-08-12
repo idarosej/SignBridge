@@ -318,6 +318,7 @@ def reset_session():
     global highest_confidence
     global last_prediction
     global prediction_count
+    global session_start
 
     gesture = "No Hand Detected"
     confidence = 0
