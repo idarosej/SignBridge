@@ -80,20 +80,29 @@ async function updateHistory() {
 
         list.innerHTML = "";
 
-        if (data.history) {
+        if (data.history && data.history.length > 0) {
 
-            data.history.forEach(item => {
+           data.history.forEach(item => {
 
-                const li =
-                    document.createElement("li");
+                const li = document.createElement("li");
 
                 li.textContent = item;
 
                 list.appendChild(li);
 
-            });
+          });
 
-        }
+        } else {
+
+             const li = document.createElement("li");
+
+             li.textContent = "No gestures detected yet";
+
+             li.style.color = "#999";
+
+             list.appendChild(li);
+
+      }
 
     } catch (error) {
 
@@ -178,7 +187,8 @@ async function updateStats() {
 
         const bestConfidence =
             document.getElementById("bestConfidence");
-
+        const differentGestures =
+    document.getElementById("differentGestures");
 
         if (totalGestures) {
 
@@ -200,6 +210,12 @@ async function updateStats() {
 
             bestConfidence.innerText =
                 Number(data.highest_confidence).toFixed(1) + "%";
+
+        }
+        if (differentGestures) {
+
+            differentGestures.innerText =
+                        data.different_gestures;
 
         }
 

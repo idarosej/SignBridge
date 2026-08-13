@@ -383,30 +383,6 @@ p {
     color: #A67B5B;
     font-size: 18px;
 }
-
-/* =========================
-   SESSION STATUS
-========================= */
-
-.session-status {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 12px;
-    color: #5B3A29;
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.status-dot {
-    width: 12px;
-    height: 12px;
-    background: #4CAF50;
-    border-radius: 50%;
-    display: inline-block;
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
-}
 }
 .session-status {
     margin-top: 15px;
@@ -423,4 +399,42 @@ p {
     border-radius: 50%;
     margin-right: 8px;
     vertical-align: middle;
+}
+/* =========================
+   SESSION STATISTICS
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-card {
+    background: #F7F1E8;
+    padding: 18px;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid #E0D2C3;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.stat-title {
+    display: block;
+    color: #6F4E37;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.stat-card strong {
+    display: block;
+    color: #5B3A29;
+    font-size: 24px;
 }

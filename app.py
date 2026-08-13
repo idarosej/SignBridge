@@ -302,10 +302,13 @@ def get_stats():
             key=gesture_counts.get
         )
 
+    different_gestures = len(gesture_counts)
+
     return {
         "total": total_gestures,
         "most_detected": most_detected,
-        "highest_confidence": round(highest_confidence, 1)
+        "highest_confidence": round(highest_confidence, 1),
+        "different_gestures": different_gestures
     }
 @app.route("/reset-session", methods=["POST"])
 def reset_session():
