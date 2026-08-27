@@ -302,13 +302,15 @@ def get_stats():
             key=gesture_counts.get
         )
 
-    different_gestures = len(gesture_counts)
+    # Calculate session duration
+    session_duration = int(time.time() - session_start)
 
     return {
         "total": total_gestures,
         "most_detected": most_detected,
         "highest_confidence": round(highest_confidence, 1),
-        "different_gestures": different_gestures
+        "different_gestures": len(gesture_counts),
+        "session_duration": session_duration
     }
 @app.route("/reset-session", methods=["POST"])
 def reset_session():
@@ -334,6 +336,8 @@ def reset_session():
 
     last_prediction = ""
     prediction_count = 0
+
+    session_start = time.time()
 
     return {
         "success": True,

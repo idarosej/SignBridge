@@ -187,6 +187,8 @@ async function updateStats() {
 
         const bestConfidence =
             document.getElementById("bestConfidence");
+        const sessionDuration =
+             document.getElementById("sessionDuration");
         const differentGestures =
     document.getElementById("differentGestures");
 
@@ -212,6 +214,22 @@ async function updateStats() {
                 Number(data.highest_confidence).toFixed(1) + "%";
 
         }
+        if (sessionDuration) {
+
+            const totalSeconds =
+                Number(data.session_duration);
+
+            const minutes =
+                Math.floor(totalSeconds / 60);
+
+            const seconds =
+                totalSeconds % 60;
+
+            sessionDuration.innerText =
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+}
         if (differentGestures) {
 
             differentGestures.innerText =
