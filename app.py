@@ -349,6 +349,29 @@ def history():
         "history": gesture_history
     }
 
+@app.route("/message")
+def get_message():
+
+    if gesture_history:
+        message = " ".join(gesture_history)
+    else:
+        message = "No message yet"
+
+    return {
+        "message": message
+    }
+
+@app.route("/clear-message", methods=["POST"])
+def clear_message():
+
+    global gesture_history
+
+    gesture_history.clear()
+
+    return {
+        "success": True,
+        "message": "Message cleared"
+    }
 @app.route("/confidence")
 def get_confidence():
     return {

@@ -254,6 +254,7 @@ updateGesture();
 updateHistory();
 updateConfidence();
 updateStats();
+updateMessage();
 
 
 // ===============================
@@ -267,6 +268,8 @@ setInterval(updateHistory, 1000);
 setInterval(updateConfidence, 500);
 
 setInterval(updateStats, 1000);
+
+setInterval(updateMessage, 500);
 
 // ===============================
 // RESET SESSION
@@ -301,6 +304,74 @@ async function resetSession() {
     } catch (error) {
 
         console.log("Reset error:", error);
+
+    }
+}
+// ===============================
+// UPDATE DETECTED MESSAGE
+// ===============================
+
+async function updateMessage() {
+
+    try {
+
+        const response = await fetch("/message");
+
+        if (!response.ok) {
+            throw new Error("Message request failed");
+        }
+
+        const data = await response.json();
+
+        const message =
+            document.getElementById("detectedMessage");
+
+        if (message) {
+            message.innerText = data.message;
+        }
+
+    } catch (error) {
+
+        console.log("Message error:", error);
+
+    }
+}
+// ===============================
+// CLEAR MESSAGE
+// ===============================
+
+async function clearMessage() {
+
+    try {
+
+        const response = await fetch("/clear-message", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            throw new Error("Clear message failed");
+        }
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (data.success) {
+
+            const message =
+                document.getElementById("detectedMessage");
+
+            if (message) {
+                message.innerText = "No message yet";
+            }
+
+            updateHistory();
+            updateMessage();
+        }
+
+    } catch (error) {
+
+        console.log("Clear message error:", error);
 
     }
 }
