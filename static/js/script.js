@@ -401,3 +401,49 @@ async function speakMessage() {
 
     }
 }
+// ===============================
+// DELETE LAST GESTURE
+// ===============================
+
+async function deleteLastGesture() {
+
+    try {
+
+        const response = await fetch("/delete-last", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            throw new Error("Delete request failed");
+        }
+
+        const data = await response.json();
+
+
+        const actionMessage =
+            document.getElementById("actionMessage");
+
+
+        if (data.success) {
+             if (actionMessage) {
+                actionMessage.innerText =
+                    "Removed: " + data.removed;
+            }
+            updateHistory();
+            updateMessage();
+            updateStats();
+
+        } else {
+
+            if (actionMessage) {
+                actionMessage.innerText =
+                    "No gesture to delete";
+            }
+
+        }
+    } catch (error) {
+
+        console.log("Delete error:", error);
+
+    }
+}

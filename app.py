@@ -161,18 +161,18 @@ def generate_frames():
 
                 speak(gesture)
 
-                # Add to history
-                gesture_history.append(gesture)
+                # Add gesture only if it is different
+                # from the previous gesture
+                if not gesture_history or gesture_history[-1] != gesture:
 
-                if len(gesture_history) > 5:
-                    gesture_history.pop(0)
+                   gesture_history.append(gesture)
 
-                # Update statistics
-                gesture_counts[gesture] = (
-                    gesture_counts.get(gesture, 0) + 1
-                )
+                   if len(gesture_history) > 5:
+                       gesture_history.pop(0)
 
-                total_gestures += 1
+                   gesture_counts[gesture] = gesture_counts.get(gesture, 0) + 1
+
+                   total_gestures += 1
 
             # Draw hand landmarks
             mp_draw.draw_landmarks(
@@ -393,6 +393,36 @@ def clear_message():
     return {
         "success": True,
         "message": "Message cleared"
+    }
+@app.route("/delete-last", methods=["POST"])
+def delete_last():
+
+    global gesture_history
+    global gesture_counts
+    global total_gestures
+
+    if gesture_history:
+
+        removed_gesture = gesture_history.pop()
+
+        if removed_gesture in gesture_counts:
+
+            gesture_counts[removed_gesture] -= 1
+
+            if gesture_counts[removed_gesture] <= 0:
+                del gesture_counts[removed_gesture]
+
+        if total_gestures > 0:
+            total_gestures -= 1
+
+        return {
+            "success": True,
+            "removed": removed_gesture
+        }
+
+    return {
+        "success": False,
+        "message": "No gesture to delete"
     }
 @app.route("/confidence")
 def get_confidence():
