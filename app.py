@@ -361,6 +361,28 @@ def get_message():
         "message": message
     }
 
+@app.route("/speak-message", methods=["POST"])
+def speak_message():
+
+    if not gesture_history:
+        return {
+            "success": False,
+            "message": "No message to speak"
+        }
+
+    message = " ".join(gesture_history)
+
+    threading.Thread(
+        target=speak,
+        args=(message,),
+        daemon=True
+    ).start()
+
+    return {
+        "success": True,
+        "message": message
+    }
+
 @app.route("/clear-message", methods=["POST"])
 def clear_message():
 

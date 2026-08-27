@@ -375,3 +375,29 @@ async function clearMessage() {
 
     }
 }
+// ===============================
+// SPEAK DETECTED MESSAGE
+// ===============================
+
+async function speakMessage() {
+
+    try {
+
+        const response = await fetch("/speak-message", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            throw new Error("Speak message failed");
+        }
+
+        const data = await response.json();
+
+        console.log(data);
+
+    } catch (error) {
+
+        console.log("Speak message error:", error);
+
+    }
+}
